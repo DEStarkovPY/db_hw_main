@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS GenreSinger (
 CREATE TABLE IF NOT EXISTS Album (
 	id SERIAL PRIMARY KEY,
 	title VARCHAR(60) NOT NULL UNIQUE,
-	year_of_release VARCHAR(60) NOT NULL
+	year_of_release INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS SingerAlbum (
@@ -29,28 +29,33 @@ CREATE TABLE IF NOT EXISTS SingerAlbum (
 CREATE TABLE IF NOT EXISTS Collection (
 	id SERIAL PRIMARY KEY,
 	title VARCHAR(60) NOT NULL UNIQUE,
-	year_of_release VARCHAR(60) NOT NULL
+	year_of_release INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Track (
 	id SERIAL PRIMARY KEY,
-	collection_id INTEGER NOT NULL REFERENCES Collection(id),
 	album_id INTEGER NOT NULL UNIQUE REFERENCES Album(id),
 	title VARCHAR(60) NOT NULL UNIQUE,
-	duration VARCHAR(60) NOT NULL
+	duration INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Boss (
-	departament_num INTEGER PRIMARY KEY,
-	name VARCHAR(60) NOT NULL
+CREATE TABLE IF NOT EXISTS TrackCollection (
+	track_id INTEGER NOT NULL REFERENCES Track(id),
+	collection_id INTEGER NOT NULL REFERENCES Collection(id),
+	CONSTRAINT PK PRIMARY KEY (collection_id, track_id)
 );
+	
+
+
 
 CREATE TABLE IF NOT EXISTS Employee (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(30) NOT NULL,
 	departament VARCHAR(60) NOT NULL,
-	boss_id INTEGER NOT NULL REFERENCES Boss(departament_num)
+	boss_id INTEGER NOT NULL REFERENCES Employee(id),
+	departament_num INTEGER NOT NULL
 );
+
 
 
 
